@@ -1,0 +1,20 @@
+.carousel .thumb img {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.carousel .slide img {
+    max-height: 40%;  
+    width: 40%;
+}
+
+/* Assuming the arrow classes are .carousel-arrow-left and .carousel-arrow-right */
+
+.carousel .control-next.control-arrow, .carousel .control-next.control-arrow:hover{
+    background-color: #801313;
+}
+
+.carousel .control-prev.control-arrow, .carousel .control-prev.control-arrow:hover {
+    background-color: #801313;
+}
+  

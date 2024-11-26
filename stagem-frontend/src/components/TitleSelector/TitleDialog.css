@@ -1,0 +1,12 @@
+.dialog-content {
+    padding: 20px;
+  }
+  
+  .dialog-title {
+    font-weight: bold;
+  }
+  
+  .dialog-actions {
+    justify-content: flex-end;
+  }
+  
