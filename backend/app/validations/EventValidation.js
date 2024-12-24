@@ -76,7 +76,6 @@ const validateEvent = async (req, res, next) => {
         if (req.body.prompts) {
             req.body.prompts = JSON.parse(req.body.prompts);
         } 
-        console.log(req.body, 'req body')
         const { error } = eventSchema.validate(req.body, { abortEarly: false, context });
         if (error) {
             return res.status(400).json(error.details);

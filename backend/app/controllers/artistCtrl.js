@@ -81,7 +81,7 @@ artistCtrl.getByTag = async (req, res) => {
 
 artistCtrl.update = async (req, res) => {
     try { 
-        // console.log("api called")
+        console.log(req.body)
         let result = ''
         let newData = {...req.body}
         if(req.files?.pfp){

@@ -125,7 +125,6 @@ export default function EditProfile() {
 
     const prev = _.pick(user.myProfile, [`${propName}`,'username','pfp','titles','address','bio','media','links'])
     const isSame = _.isEqual(form, prev)
-    console.log(isSame)
     if(isSame){
       resetAndMove()
       return
@@ -147,8 +146,8 @@ export default function EditProfile() {
     formData.append('pfp', form.pfp)
 
     if(form.titles?.length > 0){
-      form.titles.forEach((title) => {
-        formData.append(`titles`, title);
+      form.titles.forEach((title, index) => {
+        formData.append(`titles[${index}]`, title);
       });
     } else if(form.titles?.length === 0) {
       formData.append(`titles`, form.titles);
@@ -169,7 +168,6 @@ export default function EditProfile() {
         formData.append(`links[${index}]`, link);
       });   
     } 
-    console.log(formData)
     dispatch(startProfile(formData, resetAndMove))
   }
   

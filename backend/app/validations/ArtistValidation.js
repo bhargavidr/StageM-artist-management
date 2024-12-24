@@ -69,13 +69,6 @@ artistValidation.create = async (req,res,next) => {
             }
         }
 
-        //single title error        
-        if (req.body.titles && !Array.isArray(req.body.titles)) {
-            req.body.titles = [req.body.titles];
-        } else {
-            req.body.titles = [] //no title error
-        }    
-
         const user = await User.findById(req.user.id);
 
         const context = {
@@ -114,13 +107,6 @@ artistValidation.update = async (req,res,next) => {
         const profile = await Artist.findOne({userId: req.user.id})
         if (!profile){
             return res.status(404).json({error: 'Profile does not exist' })
-        }
-
-        //single title error        
-        if (req.body.titles && !Array.isArray(req.body.titles)) {
-            req.body.titles = [req.body.titles];
-        }  else {
-            req.body.titles = [] //no title error
         }
 
         if (req.files) {

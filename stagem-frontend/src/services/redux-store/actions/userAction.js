@@ -178,7 +178,7 @@ export const startProfile = (formData, resetAndMove) => {
             }}
             dispatch(getProfile())
             dispatch(setServerErrors(null))
-            resetAndMove()
+            resetAndMove();
         }catch(e){
             console.log(e)
             dispatch(resetLoader())
@@ -190,7 +190,6 @@ export const startProfile = (formData, resetAndMove) => {
 export const getProfile = (userId) => {
     return async (dispatch, getState) => {
         try{
-            console.log('getProfile')
             const state = getState();
             const role = state.user.account.role
             if(!userId ){ //get current user deets
