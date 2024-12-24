@@ -15,11 +15,13 @@ export const startUserLogin= (formData, resetForm) => {
     return async (dispatch) => {
         try{
             const response = await axios.post('/login', formData)
-            localStorage.setItem('token',response.data.token)
-            dispatch(userLogin(response.data.data))
-            dispatch(getProfile())
-            dispatch(setServerErrors(null))
-            resetForm()
+            if (response){
+                localStorage.setItem('token',response.data.token)
+                dispatch(userLogin(response.data.user))          
+                dispatch(setServerErrors(null))
+                dispatch(getProfile())  
+                resetForm()
+            }            
         }catch(e){
             console.log(e)
             dispatch(setServerErrors(e.response.data.error))
@@ -47,10 +49,10 @@ export const getAccAndProfile = () => {
     }}
 }
 
-export const verifyEmail = () => {
+export const verifyEmail = (email) => {
     return async (dispatch) => {
     try{
-        const response = await axios.get('/account/verifyEmail', {
+        const response = await axios.post('/account/verifyEmail',{email},  {
             headers: {
                 Authorization: localStorage.getItem('token')
             }
@@ -73,7 +75,8 @@ export const updateEmail = (email, setOpen) => {
                 }
             })
             dispatch(setServerErrors(null))
-            dispatch(userUpdate(response.data.data))
+            dispatch(userUpdate(response.data.user))
+            toast.success(response.data.message)
             dispatch(resetLoader())
             setOpen({alert: false,
                 verifyCode: false,
@@ -82,14 +85,20 @@ export const updateEmail = (email, setOpen) => {
         }catch(e){
             console.log(e)
             dispatch(resetLoader())
-            dispatch(setServerErrors(e.response.data.error))
+            toast.error(e.response.data.error)
         }}
 }
 
-export const updatePassword = (data, setOpen) => {
+export const updatePassword = (data, resetForm) => {
     return async (dispatch) => {
         try{
-            const response = await axios.put('/account/password', data, {
+            let url =''
+            if(data.email){
+                url = '/forgotpassword'
+            } else if (data.prev){
+                url = '/account/password'
+            }
+            const response = await axios.put(url, data, {
                 headers: {
                     Authorization: localStorage.getItem('token')
                 }
@@ -97,14 +106,12 @@ export const updatePassword = (data, setOpen) => {
             dispatch(setServerErrors(null))
             dispatch(userUpdate(response.data.data))
             dispatch(resetLoader())
-            setOpen({alert: false,
-                verifyCode: false,
-                email: false, 
-                password: false})
+            resetForm()
+            toast.success(response.data.message)
         }catch(e){
             console.log(e)
             dispatch(resetLoader())
-            dispatch(setServerErrors(e.response.data.error))
+            toast.error(e.response.data.error)
         }}
 }
 
@@ -175,8 +182,7 @@ export const startProfile = (formData, resetAndMove) => {
         }catch(e){
             console.log(e)
             dispatch(resetLoader())
-            dispatch(setServerErrors(e.response.data.error))
-            toast.error(e.response.data)
+            dispatch(setServerErrors(e.response.data))
         }
     }
 }
@@ -184,28 +190,30 @@ export const startProfile = (formData, resetAndMove) => {
 export const getProfile = (userId) => {
     return async (dispatch, getState) => {
         try{
+            console.log('getProfile')
             const state = getState();
             const role = state.user.account.role
             if(!userId ){ //get current user deets
                 const response = await axios.get(`/${role}/profile`,{
                     headers: {
-                        Authorization: localStorage.getItem('token'),
+                        Authorization: localStorage.getItem('token')
                     }
                 })
                 const profile = response.data
+                localStorage.setItem('profile',profile.username)
                 dispatch(setMyProfile(profile))
                 if(profile.userId.role == 'artist'){
                     dispatch(setProfileEvents(profile.events))
                 }
-                dispatch(setServerErrors(null))
-                localStorage.setItem('profile',profile.username)
+                dispatch(setServerErrors(null))                
             } else if (userId) {
                 const response = await axios.get(`/profile/${userId}`,{
                     headers: {
-                        Authorization: localStorage.getItem('token'),
+                        Authorization: localStorage.getItem('token')
                     }
                 })
-                const profile = response.data                
+                const profile = response.data      
+                localStorage.setItem('profile',profile.username)          
                 dispatch(setSingleProfile(profile))
                 if(profile.userId.role == 'artist'){
                     dispatch(setProfileEvents(profile.events))

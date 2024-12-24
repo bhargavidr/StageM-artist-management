@@ -17,9 +17,9 @@ const RequestsListItem = ({request, pending}) => {
     const dialogMsg = 'Once approved/rejected, status cannot be changed'
 
     const artistDeets = (artist) => {
-        return <><p style={{marginLeft: 1}}> by {artist.artistName} 
+        return <><p style={{marginLeft: 1}}> by {artist?.artistName} 
         <span>
-            <Link to={`/profile/${artist._id}`} style={{ color:'grey' }}> (@{artist.username})</Link>
+            <Link to={`/profile/${artist?._id}`} style={{ color:'grey' }}> (@{artist?.username})</Link>
         </span></p> </>
     }
 

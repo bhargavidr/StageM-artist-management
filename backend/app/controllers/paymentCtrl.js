@@ -24,8 +24,6 @@ paymentCtrl.checkout = async(req,res) => {
             success_url: "http://localhost:3000/success",
             cancel_url: "http://localhost:3000/fail"
         });
-        
-    console.log('payment happening')
     res.json({id:session.id, url: session.url})
     } catch(e){
         console.log(e)

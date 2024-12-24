@@ -48,8 +48,6 @@ export const setEvent = (event) => {
 
 export const startProfileEvents = (id) => { //only for arManager
     return async (dispatch, getState) => {
-        const state = getState();
-        const role = state.user.account.role
         try{
             const response = await axios.get(`/profile/${id}/events`, { 
                 headers: {

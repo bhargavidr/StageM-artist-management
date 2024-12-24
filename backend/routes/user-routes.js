@@ -17,9 +17,10 @@ router.post('/register',RegisterValidation, userCtrl.register)
 router.post('/login',LoginValidation, userCtrl.login)
 router.get('/account',AuthenticateUser, userCtrl.account)
 
-router.get('/account/verifyEmail',AuthenticateUser, userCtrl.verifyEmail)
+router.post('/account/verifyEmail', userCtrl.verifyEmail)
 router.put('/account/email',AuthenticateUser,validateEmail, userCtrl.updateEmail) 
 router.put('/account/password',AuthenticateUser,validatePassword, userCtrl.updatePassword) 
+router.put('/forgotpassword',userCtrl.forgotPassword)
 
 router.get('/profile/:id', AuthenticateUser, userCtrl.getUserProfile ) //get a profile - different models
 router.get('/profile/:id/events', AuthenticateUser, arManagerCtrl.profileEvents ) 

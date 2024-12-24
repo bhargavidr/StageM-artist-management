@@ -100,8 +100,8 @@ const SingleEvent = () => {
                 <Typography variant="body1" fontWeight="bold">Published by</Typography>
             </Grid>
             <Grid item xs={12} sm={9} md={5}>
-                <Typography variant="body1">{singleEvent.arManager.identityName}  <br />
-                <Link to={handleNavigateProfile(singleEvent.arManager._id)}
+                <Typography variant="body1">{singleEvent.arManager?.identityName}  <br />
+                <Link to={handleNavigateProfile(singleEvent.arManager?._id)}
                      style={{ textDecoration: 'none', color: 'grey' }} > 
                      @{singleEvent.arManager.username}
                 </Link>

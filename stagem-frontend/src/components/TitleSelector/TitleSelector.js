@@ -99,7 +99,7 @@ export default function TitleSelector({form, setForm}) {
             theme.palette.mode === 'dark' ? 'input-wrapper-dark' : ''
           }`}
         >
-          {form.titles.map((option, index) => {
+          {form.titles && form.titles.map((option, index) => {
             const { key, ...tagProps } = getTagProps({ index });
             return (
               <div key={key} className={`styled-tag ${theme.palette.mode === 'dark' ? 'styled-tag-dark' : ''}`} {...tagProps}>

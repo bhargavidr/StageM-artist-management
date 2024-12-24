@@ -9,16 +9,8 @@ const Premium = () => {
     const {myProfile, account} = useSelector(state => state.user)
     const navigate = useNavigate();
 
-    useEffect(() => {
-      // Check if stripeId is in localStorage and navigate to /success if it's present
-      const stripeId = localStorage.getItem('stripeId');
-      if (stripeId) {
-        navigate('/success');
-      }
-    }, [navigate]);
-
     const body = {
-      name: myProfile.username
+      name: myProfile?.username
     }
 
   return (

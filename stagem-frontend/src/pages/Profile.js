@@ -43,17 +43,8 @@ export default function Profile() {
   }, [singleProfile, id]);
   
   useEffect(() => {
-    if (!profile && !serverErrors) {
-      const timer = setTimeout(() => {
-        if (!profile) {
-          navigate('/profile/edit');
-        }
-      }, 8000);
-  
-      return () => clearTimeout(timer); // Cleanup timer if component unmounts
-    }
     setSocialIcons(initialState); // Set initial social icons from profile
-  }, [profile, initialState, serverErrors, navigate]);
+  }, [profile]);
   
   
 
@@ -80,7 +71,7 @@ export default function Profile() {
                      key={index}/> ))}              
               </Stack>}
 
-              {profile.userId.role == 'arManager' && <Box display="flex" alignItems="center" sx={{ mt:1 }}>
+              {profile.userId.role == 'arManager' && profile.address && <Box display="flex" alignItems="center" sx={{ mt:1 }}>
                 <BusinessIcon fontSize="small" />
                 <Typography variant="body1" sx={{ ml: 1 }}>{profile.address}</Typography>
               </Box>}

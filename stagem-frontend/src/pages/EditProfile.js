@@ -23,7 +23,8 @@ export default function EditProfile() {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch()
 
-  const {isPremium, role} = user.account 
+  const isPremium = user.account?.isPremium 
+  const role = user.account?.role
   const {serverErrors, isLoading} = user
 
   const propLabel = role == 'artist' ? 'Artist' : 'Manager'
@@ -55,9 +56,7 @@ export default function EditProfile() {
 
     if (validator.isEmpty(form.username)) {
       errors.username = 'Username is required';
-    } else if (form.username !== form.username.toLowerCase()) {
-      errors.username = 'Username must be in lowercase';
-    }
+    } 
  
     if (validator.isEmpty(form[propName])) {
       errors[propName] = `${propLabel} Name is required`;
@@ -70,7 +69,7 @@ export default function EditProfile() {
         errors.titles = "Titles cannot be more than 6"
       }
     } else if (role == 'arManager'){
-      if (!validator.isLength(form.address, { max: 254 })) {
+      if (form.address && !validator.isLength(form.address, { max: 254 })) {
         errors.address = 'Address cannot exceed 254 characters';
       } 
     }
@@ -112,6 +111,7 @@ export default function EditProfile() {
 
   useEffect(() => {
     setForm(initialFormState)
+    dispatchSiteData({type: 'RESET_CLIENT_ERRORS'})
   },[user.myProfile])
 
   const resetAndMove = () => {
@@ -123,8 +123,9 @@ export default function EditProfile() {
     e.preventDefault();
     dispatch(setLoader());
 
-    const prev = _.pick(user.myProfile, [`${propName}`,'username','pfp','titles','bio','media','links'])
+    const prev = _.pick(user.myProfile, [`${propName}`,'username','pfp','titles','address','bio','media','links'])
     const isSame = _.isEqual(form, prev)
+    console.log(isSame)
     if(isSame){
       resetAndMove()
       return
@@ -145,11 +146,13 @@ export default function EditProfile() {
     formData.append(`${propName}`,form[propName])
     formData.append('pfp', form.pfp)
 
-    if(form.titles){
+    if(form.titles?.length > 0){
       form.titles.forEach((title) => {
         formData.append(`titles`, title);
       });
-    } else if (form.address){
+    } else if(form.titles?.length === 0) {
+      formData.append(`titles`, form.titles);
+    } else {
       formData.append('address', form.address)
     }
 
@@ -164,10 +167,9 @@ export default function EditProfile() {
       
       form.links.forEach((link, index) => {
         formData.append(`links[${index}]`, link);
-      });
-     
-    }
-    
+      });   
+    } 
+    console.log(formData)
     dispatch(startProfile(formData, resetAndMove))
   }
   
@@ -177,18 +179,22 @@ export default function EditProfile() {
   const displayErrors = () => {
     let result;
     // console.log(serverErrors)
-    if (serverErrors.length == 1) {
+    if (typeof(serverErrors) === 'string'){
       result = <Alert severity="error" variant="filled" sx={{ width: 'fit-content', mb: 2 }}>
-      {serverErrors.details[0].message}
+        Can upload only image/video files for media and profile picture. 
     </Alert>
-    } else {
+    } else if (serverErrors.length > 1){
       result = (
-          serverErrors.details?.map((error, i) => (
-            <Alert severity="error"  variant="filled" sx={{ width: 'fit-content', mb: 2 }} key={i}>
-            {error.message}
-          </Alert>
-          ))        
+        <ul><Alert severity="error"  variant="filled" sx={{ width: 'fit-content'}} >
+          {serverErrors?.map((error, i) => {
+            return <li> {error.message} </li>
+          }) }
+        </Alert></ul>       
       );
+    } else {
+      result = <Alert severity="error" variant="filled" sx={{ width: 'fit-content', mb: 2 }}>
+                {serverErrors.error?.details[0]?.message}
+              </Alert>
     }
     return result;
   };
@@ -254,7 +260,7 @@ export default function EditProfile() {
     </Grid>
 
         <Grid item xs={12} md={5} sx={{mt: '50px' }} >
-          <ProfilePremium isPremium = {isPremium} form={form} setForm={setForm} key={user.account._id}/>
+          <ProfilePremium isPremium = {isPremium} form={form} setForm={setForm} key={user.account?._id}/>
           {role == 'artist' && <UploadMedia isPremium = {isPremium} form={form} setForm={setForm}/>}
           <br />
         </Grid>

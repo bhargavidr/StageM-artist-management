@@ -12,6 +12,7 @@ import _ from 'lodash'
 
 const EditApplication = () => {
   const { isLoading, singleEvent } = useSelector((state) => state.events);
+  const { myProfile } = useSelector((state) => state.user);
   const { application } = useSelector(state => state.applications);
   const applicationLoader = useSelector(state => state.applications.isLoading)
   const { eventId, id } = useParams();
@@ -95,6 +96,9 @@ const EditApplication = () => {
   
 
   const handleSubmit = () => {
+    if(!myProfile){
+      navigate('/profile/edit')
+    }
     const artistTitles = checkboxData.filter(ele => ele.checked).map(ele => ele.title)
 
     const formData = {
@@ -124,6 +128,8 @@ const EditApplication = () => {
   const resetAndMove = () => {
     dispatch(resetLoader())
     dispatchSiteData({type: 'RESET_CLIENT_ERRORS'})
+    setCheckboxData([])
+    setPromptResponses([])
     navigate(`/applications`)
   }
 

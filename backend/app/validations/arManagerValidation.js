@@ -15,7 +15,7 @@ const profileSchema = Joi.object({
     pfp: Joi.any()
             .allow(''),
     
-    address: Joi.string()
+    address: Joi.string().allow('')
                 .optional(),
 
     bio: Joi.when('$isPremium', {

@@ -61,6 +61,7 @@ userCtrl.account = async (req, res) => {
 }
 
 userCtrl.verifyEmail = async (req,res) => {
+    const email = req.body.email
     try{
         const min = parseInt(process.env.MIN, 10);
         const max = parseInt(process.env.MAX, 10);
@@ -69,9 +70,9 @@ userCtrl.verifyEmail = async (req,res) => {
 
         const message = {
             From: process.env.EMAIL,
-            To: req.user.email ,
+            To: email,
             Subject: 'Verify Email',
-            TextBody: `Your verification code for updating your email - ${code}. Ignore this if you didn't request an email change, and for extra security, consider updating your password as well.`
+            TextBody: `Your verification code - ${code}. Ignore this if you didn't request an email/password change, and for extra security, consider updating your password as well.`
         };        
         
         const response = await axios.post('https://api.postmarkapp.com/email', message, {
@@ -120,6 +121,26 @@ userCtrl.updatePassword = async(req,res) => {
         res.status(500).json({ error })
     }
 }
+
+userCtrl.forgotPassword = async (req, res) => {
+    const { email, newPassword } = req.body;
+    
+    try {
+        const user = await User.findOne({ email });        
+        if (!user) {
+            return res.status(404).json({ error: 'User not found. Please enter your registered mail.' });
+        }
+
+        const salt = await bcryptjs.genSalt();
+        const hashed = await bcryptjs.hash(newPassword, salt);
+        user.password = hashed;
+        await user.save();
+        return res.status(200).json({ message: 'Password successfully updated' });        
+    } catch (error) {
+        res.status(500).json({ error: 'Server error, please try again later' });
+    }
+};
+
 
 userCtrl.delete = async (req, res) => {
 

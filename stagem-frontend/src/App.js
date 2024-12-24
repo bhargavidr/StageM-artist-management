@@ -27,6 +27,7 @@ import MyEvents from './pages/MyEvents';
 import Premium from './pages/Premium';
 import PaymentStatus from './pages/PaymentStatus';
 import Unauthorized from './pages/Unauthorized';
+import ForgotPassword from './pages/ForgotPassword';
 
 import Header from './components/Layout/Header'
 
@@ -68,7 +69,7 @@ function App() {
   const isLoginPage = location.pathname === '/login' || location.pathname === '/register'; //div padding
   useEffect(() => {
     const dashboardPages = ['/profile', '/profile/edit','/account',
-                            '/events/edit','/events/edit/:id',                            
+                            '/events/edit','/events/edit/:id', '/events/:id',                          
                             '/events/:eventId/application/:id','/events/:eventId/applications','/applications',
                             '/requests','/premium']
     if(dashboardPages.includes(location.pathname)){
@@ -108,7 +109,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/unauthorized" element={<Unauthorized />} />
-
+      <Route path='/forgotpassword' element={<ForgotPassword /> } />
       </Routes>
 
 

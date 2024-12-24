@@ -11,10 +11,8 @@ export const handlePayment = async(body) => {
               Authorization: localStorage.getItem('token')
           }
         })
-
         localStorage.setItem('stripeId', response.data.id)
         window.location = response.data.url
-
     }catch(e){
       console.log(e)
     }

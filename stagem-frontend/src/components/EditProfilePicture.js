@@ -47,7 +47,7 @@ export default function EditProfilePicture ({form, setForm}) {
                 onClick={handleMenuOpen}
               >                
                 <EditIcon />
-                <input type="file" hidden id="pfp" onChange={handleChange} />
+                <input type="file" hidden id="pfp" onChange={handleChange} accept="image/*" />
               </Fab>  
 
             <Menu

@@ -58,10 +58,10 @@ const Applications = ({eventId, eventName}) => {
             <TableRow key={ele._id} sx={{p: 1}} >        
               {user.account.role === 'arManager' ?               
                   <TableCell>
-                    <Link to={`/profile/${ele.appliedBy._id}`} style={{ display: 'flex', alignItems: 'center', color:'white' }}>
-                    <Avatar alt={ele.appliedBy.username} src={ele.appliedBy.pfp} size='small' sx={{mr:1}} />
-                      @{ele.appliedBy.username}
-                    </Link>
+                    {ele.appliedBy && <Link to={`/profile/${ele.appliedBy?._id}`} style={{ display: 'flex', alignItems: 'center', color:'white' }}>
+                     <Avatar alt={ele.appliedBy?.username} src={ele.appliedBy?.pfp} size='small' sx={{mr:1}} />
+                        @{ele.appliedBy?.username}
+                    </Link>}
                   </TableCell>  :
                   <TableCell>
                      <Link to={`/events/${ele.event._id}`} style={{ display: 'flex', alignItems: 'center', color:'white'}}>

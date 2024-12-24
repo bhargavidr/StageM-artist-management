@@ -105,7 +105,7 @@ const UpdatedAt = useMemo(() =>
     <Grid container spacing={2} sx={{ mt: '4%'}}>
 
       {role == 'artist' && <> <Box component={Link}
-                              to={`/profile/${application.event?.arManager._id}`}
+                              to={`/profile/${application.event?.arManager?._id}`}
                               sx={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -114,8 +114,8 @@ const UpdatedAt = useMemo(() =>
                               }}
                             >
                           <Avatar
-                            src={application.event.arManager.pfp}
-                            alt={application.event.arManager.username}
+                            src={application.event?.arManager?.pfp}
+                            alt={application.event?.arManager?.username}
                             sx={{ width: 56, height: 56 }} // Adjust size as needed
                           />
                           <Box
@@ -127,11 +127,11 @@ const UpdatedAt = useMemo(() =>
                             }}
                           >                            
                             <Typography variant="body2" color="primary" >
-                              <i> @{application.event.arManager.username}</i>
+                              <i> @{application.event?.arManager?.username}</i>
                             </Typography>
                           
                             <Typography variant="body2" color="primary">
-                              {application.event.arManager.identityName}
+                              {application.event?.arManager?.identityName}
                             </Typography>
                           </Box>
                         </Box>

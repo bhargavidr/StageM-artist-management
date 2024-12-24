@@ -6,7 +6,6 @@ import { useSelector,useDispatch } from 'react-redux'
 import { useTheme } from '@emotion/react';
 
 import { verifyEmail } from '../services/redux-store/actions/userAction';
-import LoadingButtonComp from '../components/Buttons/LoadingButtonComp';
 import EditEmail from '../components/EditEmail';
 import EditPassword from '../components/EditPassword';
 
@@ -25,7 +24,7 @@ const Account = () => {
 
     const handleVerify = async () => {
         setOpen({...open, verifyCode:true,  password:false})
-        const res = await dispatch(verifyEmail())  
+        const res = await dispatch(verifyEmail(user.account.email))  
         if(res.code){
             setOpen({...open, alert:true, verifyCode:true, password:false})
         }

@@ -72,7 +72,9 @@ artistValidation.create = async (req,res,next) => {
         //single title error        
         if (req.body.titles && !Array.isArray(req.body.titles)) {
             req.body.titles = [req.body.titles];
-        }      
+        } else {
+            req.body.titles = [] //no title error
+        }    
 
         const user = await User.findById(req.user.id);
 
@@ -117,7 +119,9 @@ artistValidation.update = async (req,res,next) => {
         //single title error        
         if (req.body.titles && !Array.isArray(req.body.titles)) {
             req.body.titles = [req.body.titles];
-        }  
+        }  else {
+            req.body.titles = [] //no title error
+        }
 
         if (req.files) {
             if(req.files.pfp){

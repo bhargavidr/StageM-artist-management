@@ -16,8 +16,7 @@ export default function PrivateRoute({ permittedRoles, children}){
         return <Navigate to = "/profile/edit" />
     }
     
-
-    if(!permittedRoles.includes(user.account.role)) {
+    if(!permittedRoles.includes(user.account?.role)) {
         return <Navigate to= "/unauthorized" />
     } 
 

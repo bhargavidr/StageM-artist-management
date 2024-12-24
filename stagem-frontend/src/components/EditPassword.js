@@ -1,8 +1,7 @@
 import React, {useState} from 'react'
-import { TextField} from '@mui/material'
+import {TextField} from '@mui/material'
 import LoadingButtonComp from './Buttons/LoadingButtonComp'
 import validator from 'validator'
-
 import { updatePassword, setLoader, resetLoader } from '../services/redux-store/actions/userAction'
 import { useDispatch, useSelector } from 'react-redux'
 import { useSiteData } from '../contextAPI/SiteContext'
@@ -46,7 +45,14 @@ const EditPassword = ({open, setOpen}) => {
             return
         }
         dispatchSiteData({type: 'RESET_CLIENT_ERRORS'})
-        dispatch(updatePassword(password, setOpen))
+        dispatch(updatePassword(password, resetForm))
+    }
+
+    const resetForm = () => {
+        setOpen({alert: false,
+            verifyCode: false,
+            email: false, 
+            password: false})
     }
 
   return (

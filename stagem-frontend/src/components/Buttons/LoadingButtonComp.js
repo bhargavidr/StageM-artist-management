@@ -21,7 +21,7 @@ function LoadingButtonComp({handleSubmit, disabled, isLoading}) {
             case `/events/${eventId}/apply`: return 'Submit'
             case `/events/${eventId}/apply/${id}`: return 'Save Changes'
             case '/premium': return 'Subscribe'
-            case '/success': return 'Unlock premium'
+            case '/forgotpassword': return 'Save changes and login'
         }
     }
 //remove password from user

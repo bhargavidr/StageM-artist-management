@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { startUserLogin } from '../services/redux-store/actions/userAction';
+import { startUserLogin, getProfile } from '../services/redux-store/actions/userAction';
 import * as Yup from 'yup';
 
 
@@ -136,6 +136,9 @@ export default function Login() {
               </Button>
               <Grid container>
                 <Grid item>
+                <Link href="/forgotpassword" variant="body2">
+                    {"Forgot Password"}
+                  </Link> <br />
                   <Link href="/register" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>

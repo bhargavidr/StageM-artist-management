@@ -1,6 +1,8 @@
 const Artist = require('../models/artist')
 const Event = require('../models/event')
 const Application = require('../models/application')
+const User = require('../models/user')
+const axios = require('axios')
 
 const applicationCtrl = {}
 
@@ -61,14 +63,31 @@ applicationCtrl.updateStatus = async (req, res) => {
                                 },
                                 select: ['eventTitle', 'updatedAt', 'prompts']
                             })   
-                        .populate('appliedBy',['username','artistName']);
+                        .populate('appliedBy',['username', 'userId', 'artistName']);
 
         if (!updatedApplication) {
             return res.status(404).json({ error: 'Application not found' });
         }
 
+        const user = await User.findById(updatedApplication.appliedBy.userId).select('email')
+        const message = {
+            From: process.env.EMAIL,
+            To: user.email ,
+            Subject: 'Application status',
+            TextBody: `Your application for ${event.eventTitle} is ${status}. The artist manager will reach out if anything required.`
+        };        
+        
+        const response = await axios.post('https://api.postmarkapp.com/email', message, {
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'X-Postmark-Server-Token': process.env.EMAIL_TOKEN,
+            },
+          });
+
         res.status(200).json({message: 'Status updated',data: updatedApplication});
     } catch (e) {
+        console.log(e)
         res.status(500).json({ error:'Something went wrong'});
     }
 };
