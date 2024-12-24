@@ -21,8 +21,8 @@ paymentCtrl.checkout = async(req,res) => {
                 quantity: 1
             }],
             mode: "subscription",
-            success_url: "http://localhost:3000/success",
-            cancel_url: "http://localhost:3000/fail"
+            success_url: `${process.env.BASE_URL}/success`,
+            cancel_url: `${process.env.BASE_URL}/fail`
         });
     res.json({id:session.id, url: session.url})
     } catch(e){
